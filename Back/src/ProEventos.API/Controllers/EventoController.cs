@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProEventos.API.Data;
 using ProEventos.API.Models;
 
 namespace ProEventos.API.Controllers
@@ -32,20 +33,22 @@ namespace ProEventos.API.Controllers
                 ImagemURL = "foto1.png"
             },
         };
-        public EventoController(ILogger<EventoController> logger)
+        private DataContext _context;
+        public EventoController(DataContext context)
         {
+            _context = context;
         }
 
         [HttpGet]
         public IEnumerable<Evento> Get()
         {
-            return _evento;
+            return _context.Eventos;
         }
 
         [HttpGet("{id}")]
         public IEnumerable<Evento> GetById(int id)
         {
-            return _evento.Where(e => e.EventoId == id);
+            return _context.Eventos.Where(e => e.EventoId == id);
         }
     }
 }
