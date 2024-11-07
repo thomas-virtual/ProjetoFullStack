@@ -22,8 +22,18 @@ import { DateTimeFormatPipe } from 'src/helpers/DateTimeFormat.pipe';
 import { TituloComponent } from './components/titulo/titulo.component';
 import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
 import { ContatosComponent } from './components/contatos/contatos.component';
-import { PerfilComponent } from './components/perfil/perfil.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { EventosListaComponent } from './components/eventos/eventos-lista/eventos-lista.component';
+import { EventosDetalheComponent } from './components/eventos/eventos-detalhe/eventos-detalhe.component';
+import { UserComponent } from './components/user/user.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { RegistrationComponent } from './components/user/registration/registration.component';
+import { RegistrationFormComponent } from './components/user/registration/registration-form/registration-form.component';
+import { PerfilFormComponent } from './components/user/perfil/perfil-form/perfil-form.component';
+import { LoteComponent } from './components/lote/lote.component';
+import { LoteFormComponent } from './components/lote/lote-form/lote-form.component';
+import { EventosFormComponent } from './components/eventos/eventos-form/eventos-form.component';
+import { PerfilComponent } from './components/user/perfil/perfil.component';
 
 @NgModule({
   declarations: [	
@@ -35,7 +45,17 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     PalestrantesComponent,
     ContatosComponent,
     PerfilComponent,
-    DashboardComponent
+    DashboardComponent,
+    EventosListaComponent,
+    EventosDetalheComponent,
+    UserComponent,
+    LoginComponent,
+    RegistrationComponent,
+    RegistrationFormComponent,
+    PerfilFormComponent,
+    LoteComponent,
+    LoteFormComponent,
+    EventosFormComponent
    ],
   imports: [
     BrowserModule,
