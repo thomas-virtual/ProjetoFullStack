@@ -1,34 +1,104 @@
 <div class="card">
-    <form>
+    <form [formGroup]="form">
         <div class="p-3">
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <label>Tema</label>
-                    <input type="text" class="form-control" placeholder="Insira o Tema">
+                    <input 
+                    formControlName="tema" [ngClass]="{'is-invalid': form.get('tema')?.errors && form.get('tema')?.touched}"
+                    type="text" class="form-control" placeholder="Insira o Tema">
+                    <div *ngIf="form.get('tema')?.hasError('required')" class="invalid-feedback">
+                        Tema é obrigatório
+                    </div>
+                    <div *ngIf="form.get('tema')?.hasError('minlength')" class="invalid-feedback">
+                        O minimo é 3 caracteres
+                    </div>
+                    <div *ngIf="form.get('tema')?.hasError('maxlength')" class="invalid-feedback">
+                        O maximo é 50 caracteres
+                    </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-8">
                     <label>Local</label>
-                    <input type="text" class="form-control" placeholder="">
+                    <input
+                    [ngClass]="{'is-invalid': form.get('local')?.errors && form.get('local')?.touched}" 
+                    formControlName="local" 
+                    type="text" class="form-control" placeholder="Local">
+                    <div *ngIf="form.get('local')?.hasError('required')" class="invalid-feedback">
+                        Local é obrigatório
+                    </div>
+                    <div *ngIf="form.get('local')?.hasError('minlength')" class="invalid-feedback">
+                        O minimo é 3 caracteres
+                    </div>
+                    <div *ngIf="form.get('local')?.hasError('maxlength')" class="invalid-feedback">
+                        O maximo é 50 caracteres
+                    </div>
                 </div>
                 <div class="form-group col-md-4">
-                    <label>Data e Hora</label>
-                    <input type="datetime" class="form-control" placeholder="">
+                    <label>Data</label>
+                    <input
+                    [ngClass]="{'is-invalid': form.get('dataEvento')?.errors && form.get('dataEvento')?.touched}" 
+                    formControlName="dataEvento" 
+                    type="datetime" class="form-control" placeholder="Data">
+                    <div *ngIf="form.get('dataEvento')?.hasError('required')" class="invalid-feedback">
+                        Data é obrigatório
+                    </div>
+                    <div *ngIf="form.get('dataEvento')?.hasError('minlength')" class="invalid-feedback">
+                        O minimo é 6 caracteres
+                    </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label>Qtd Pessoas</label>
-                    <input type="text" class="form-control is-invalid" placeholder="">
+                    <input
+                    [ngClass]="{'is-invalid': form.get('qtdPessoas')?.errors && form.get('qtdPessoas')?.touched}" 
+                    formControlName="qtdPessoas" 
+                    type="number" class="form-control is-invalid" placeholder="QTD">
+                    <div *ngIf="form.get('qtdPessoas')?.hasError('required')" class="invalid-feedback">
+                        Quantidade de Pessoas é obrigatório
+                    </div>
+                    <div *ngIf="form.get('qtdPessoas')?.hasError('min')" class="invalid-feedback">
+                        O minimo é 50 pessoas
+                    </div>
                 </div>
                 <div class="form-group col-md-4">
                     <label>Telefone</label>
-                    <input type="text" class="form-control" placeholder="(000) 90000-0000">
+                    <input
+                    [ngClass]="{'is-invalid': form.get('telefone')?.errors && form.get('telefone')?.touched}" 
+                    formControlName="telefone" 
+                    type="text" class="form-control" placeholder="(000) 90000-0000">
+                    <div *ngIf="form.get('telefone')?.hasError('required')" class="invalid-feedback">
+                        Telefone é obrigatório
+                    </div>
+                    <div *ngIf="form.get('telefone')?.hasError('minlength')" class="invalid-feedback">
+                        O minimo é 11 digitos
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label>Email</label>
-                    <input type="text" class="form-control" placeholder="e-mail">
+                    <input
+                    [ngClass]="{'is-invalid': form.get('email')?.errors && form.get('email')?.touched}" 
+                    formControlName="email" type="text" class="form-control" placeholder="e-mail">
+                    <div *ngIf="form.get('email')?.hasError('required')" class="invalid-feedback">
+                        Email é obrigatório
+                    </div>
+                    <div *ngIf="form.get('email')?.hasError('pattern')" class="invalid-feedback">
+                        Campo preenchido incorretamente.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Imagem url</label>
+                    <input
+                    [ngClass]="{'is-invalid': form.get('')?.errors && form.get('')?.touched}" 
+                    formControlName="imagemURL" type="text" class="form-control" placeholder="Imagem">
+                    <div *ngIf="form.get('')?.hasError('required')" class="invalid-feedback">
+                        Imagem é obrigatório
+                    </div>
+                    <div *ngIf="form.get('')?.hasError('pattern')" class="invalid-feedback">
+                        Campo preenchido incorretamente.
+                    </div>
                 </div>
             </div>
         </div>
