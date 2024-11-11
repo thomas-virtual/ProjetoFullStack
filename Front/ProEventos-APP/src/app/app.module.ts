@@ -10,7 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { ToastrModule } from 'ngx-toastr';
-
+import { BsDatepickerModule, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AppComponent } from './app.component';
@@ -74,9 +74,10 @@ import { PerfilComponent } from './components/user/perfil/perfil.component';
       positionClass: 'toast-bottom-right',
       timeOut: 3000
     }),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    BsDatepickerModule.forRoot(),
   ],
-  providers: [EventoService],
+  providers: [EventoService, BsLocaleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

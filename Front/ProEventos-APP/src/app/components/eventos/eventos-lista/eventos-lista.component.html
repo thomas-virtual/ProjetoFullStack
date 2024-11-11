@@ -55,7 +55,7 @@
                     <button class="btn btn-primary btn-sm mr-2 d-none d-lg-inline" tooltip="Editar" (click)="detalheEvento(evento.eventoId)">
                         <i class="fa fa-edit"></i>
                     </button>
-                    <button class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+                    <button class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal($event, template, evento.eventoId)">
                         <i class="fa fa-trash"></i>
                     </button>
                 </td>
