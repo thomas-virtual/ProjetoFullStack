@@ -61,6 +61,7 @@ export class EventosListaComponent implements OnInit {
       next: (response: Evento[]) => {
         this.eventos = response
         this.filteredEvents = this.eventos
+        console.log(this.eventos)
       },
       error: (error: any) => {
         this.spinner.hide()

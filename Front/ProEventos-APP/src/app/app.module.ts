@@ -34,6 +34,9 @@ import { LoteComponent } from './components/lote/lote.component';
 import { LoteFormComponent } from './components/lote/lote-form/lote-form.component';
 import { EventosFormComponent } from './components/eventos/eventos-form/eventos-form.component';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
+import { LoteService } from 'src/services/Lote.service';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { customCurrencyMaskConfig } from 'src/utils/CurrencyMaskConfig';
 
 @NgModule({
   declarations: [	
@@ -55,7 +58,7 @@ import { PerfilComponent } from './components/user/perfil/perfil.component';
     PerfilFormComponent,
     LoteComponent,
     LoteFormComponent,
-    EventosFormComponent
+    EventosFormComponent,
    ],
   imports: [
     BrowserModule,
@@ -76,8 +79,13 @@ import { PerfilComponent } from './components/user/perfil/perfil.component';
     }),
     NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
   ],
-  providers: [EventoService, BsLocaleService],
+  providers: [
+    EventoService, 
+    LoteService,
+    BsLocaleService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
