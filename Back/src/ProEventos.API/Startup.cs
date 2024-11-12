@@ -33,8 +33,11 @@ namespace ProEventos.API
 
             //CONF. DE INJECAO DE DEPENDENCIA
             services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<ILoteService, LoteService>();
+
             services.AddScoped<IGeralPersist, GeralPersistance>();
             services.AddScoped<IEventoPersist, EventoPersistance>();
+            services.AddScoped<ILotePersist, LotePersistence>();
 
             services.AddControllers()
                     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

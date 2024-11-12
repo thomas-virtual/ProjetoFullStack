@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using ProEventos.Domain;
 
 namespace ProEventos.Application.dtos
 {
@@ -24,5 +25,6 @@ namespace ProEventos.Application.dtos
 
         [EmailAddress()]
         public string Email { get; set; }
+        public Lote[] Lotes { get; set; }
     }
 }
