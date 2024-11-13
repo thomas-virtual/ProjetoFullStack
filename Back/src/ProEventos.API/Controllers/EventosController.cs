@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.Application.Contratos;
@@ -15,8 +17,10 @@ namespace ProEventos.API.Controllers
     public class EventosController : ControllerBase
     {
         public readonly IEventoService _eventoService;
-        public EventosController(IEventoService eventoService)
+        public readonly IWebHostEnvironment _hostEnviroment;
+        public EventosController(IEventoService eventoService, IWebHostEnvironment hostEnviroment)
         {
+            this._hostEnviroment = hostEnviroment;
             this._eventoService = eventoService;
         }
 
@@ -97,6 +101,68 @@ namespace ProEventos.API.Controllers
             } 
         }
 
+        [HttpPost("upload-image/{eventoId}")]
+        public async Task<IActionResult> UploadImage(int eventoId) 
+        {
+            try
+            {
+                 var evento = await _eventoService.GetEventoByIdAsync(eventoId, true);
+                 if(evento == null) return NoContent();
+
+                 var file = Request.Form.Files[0];
+                 if(file.Length > 0)
+                 {
+                    // DELETE IMAGE
+                    DeleteImage(evento.ImagemURL);
+
+                    // SAVE IMAGE 
+                    evento.ImagemURL = await SaveImage(file);
+                 }
+
+                 var eventoRetorno = await _eventoService.UpdateEvento(eventoId, evento);
+
+                 return Ok(eventoRetorno);
+            }
+            catch (Exception ex)
+            {
+                
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar fazer Upload da Imagem. Error: {ex.Message}"
+                    );
+            } 
+        }
+
+        [NonAction]
+        public void DeleteImage(String imageName) 
+        {
+            var imagePath = Path.Combine(_hostEnviroment.ContentRootPath, @"Resources/images", imageName);
+            if(System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+            
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile) 
+        {
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName)
+                                              .Take(10)
+                                              .ToArray()
+                                         ).Replace(" ", "-");
+            
+            imageName = $"{imageName}${DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
+            var imagePath = Path.Combine(_hostEnviroment.ContentRootPath, @"Resources/images", imageName);
+
+            using(var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            return imageName;
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, EventoDto model) 
         {
@@ -122,16 +188,23 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                 return await _eventoService.DeleteEvento(id) 
-                            ? Ok(new { message = "Deletado"}) 
-                            : throw new Exception("Ocorreu um problema não especificado");
+                var evento = await _eventoService.GetEventoByIdAsync(id, true);
+                if(await _eventoService.DeleteEvento(id))
+                {
+                    DeleteImage(evento.ImagemURL);
+                    return Ok(new { message = "Deletado"}); 
+                } 
+                else 
+                {
+                    throw new Exception("Ocorreu um problema não especificado ao tentar deletar Evento");
+                }
             }
             catch (Exception ex)
             {
                 
                 return this.StatusCode(
                     StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar eventos. Error: {ex.Message}"
+                    $"Erro ao tentar deletar eventos. Error: {ex.Message}"
                     );
             } 
         }

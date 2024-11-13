@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Lote } from 'src/models/Lote';
 import { LoteService } from 'src/services/Lote.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { environment } from 'src/environments/environment';
 
 defineLocale('pt-br', ptBrLocale);
 @Component({
@@ -20,10 +21,12 @@ defineLocale('pt-br', ptBrLocale);
 export class EventosFormComponent implements OnInit {
   public evento = {} as Evento
   public eventoId: number;
+  public imagemURL = 'assets/foto.png'
   public loteAtual = {id: 0, nome: '', index: 0}
   public modalRef: BsModalRef
   public estadoSalvar = 'post'
   public form: FormGroup = new FormGroup({});
+  public file: File;
   
   public bsConfig: any =  {
     isAnimeted: true,
@@ -83,7 +86,7 @@ export class EventosFormComponent implements OnInit {
       qtdPessoas: new FormControl('', [Validators.required, Validators.min(50)]),
       telefone: new FormControl('', [Validators.required, Validators.minLength(11)]),
       email: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]*\@[a-z]*\.com?/)]),
-      imagemURL: new FormControl('', [Validators.required]),
+      imagemURL: new FormControl(''),
       lotes: this.fb.array([])
     })
   }
@@ -97,11 +100,13 @@ export class EventosFormComponent implements OnInit {
 
     if(this.eventoId !== null && this.eventoId !== 0) {
       this.estadoSalvar = 'put' 
-
       this.eventoService.getEventoById(this.eventoId).subscribe({
         next: (response) => {
           this.evento = {...response}
           this.form.patchValue(this.evento);
+          if(this.evento.imagemURL !== ''){
+            this.imagemURL = `${environment.apiURL}/resources/images/${this.evento.imagemURL}`
+          }
           this.carregarLotes()
           this.spinner.show()
         },
@@ -116,7 +121,7 @@ export class EventosFormComponent implements OnInit {
 
   public salvarAlteracao(): void {
     this.eventoId = +this.activeRoute.snapshot.paramMap.get('id')
-    if(this.eventoId !== null && this.eventoId !== 0) {
+    if(this.eventoId !== null && this.eventoId === 0) {
       this.adicionarEvento();
     } else {
       this.atualizarEvento(+this.eventoId);
@@ -164,7 +169,6 @@ export class EventosFormComponent implements OnInit {
         },
         complete: () => {
           this.spinner.hide()
-          this.resetForm()
         },
       })
     }
@@ -243,5 +247,30 @@ export class EventosFormComponent implements OnInit {
 
   public declineDeleteLote(): void {
     this.modalRef.hide()
+  }
+
+  onFileChange(event: any): void {
+    var reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+    this.file = event.target.files;
+    reader.readAsDataURL(this.file[0]);
+    console.log(this.file, event)
+    this.uploadImage();
+  }
+
+  uploadImage(): void {
+    this.spinner.show();
+    this.eventoService.postUpload(this.eventoId, this.file).subscribe(
+      (response) => {
+        this.toastr.success("Imagem atualizada com sucesso", "Sucesso")
+        this.carregarEvento();
+      },
+      (error) => {
+        console.log(error)
+        this.toastr.error("Erro ao tentar atualizar imagem", "Erro")
+      },
+    ).add(() => this.spinner.hide())
   }
 }

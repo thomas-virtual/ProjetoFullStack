@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { Evento } from 'src/models/Evento';
 import { EventoService } from 'src/services/EventoService.service';
 
@@ -50,6 +51,12 @@ export class EventosListaComponent implements OnInit {
         evento.local.toLocaleLowerCase().indexOf(filterFor) !== -1
       }
     )
+  }
+
+  mostraImagem(imagemURL: string): string {
+    return imagemURL !== '' 
+           ? `${environment.apiURL}/resources/images/${imagemURL}` 
+           : '../../../../assets/semImagem.png'
   }
 
   public alterarImagem(): void {
