@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -37,6 +37,8 @@ import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { LoteService } from 'src/services/Lote.service';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from 'src/utils/CurrencyMaskConfig';
+import { JwtInterceptor } from 'src/interceptors/jwt.interceptor';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [	
@@ -59,6 +61,7 @@ import { customCurrencyMaskConfig } from 'src/utils/CurrencyMaskConfig';
     LoteComponent,
     LoteFormComponent,
     EventosFormComponent,
+    HomeComponent,
    ],
   imports: [
     BrowserModule,
@@ -84,7 +87,8 @@ import { customCurrencyMaskConfig } from 'src/utils/CurrencyMaskConfig';
   providers: [
     EventoService, 
     LoteService,
-    BsLocaleService
+    BsLocaleService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

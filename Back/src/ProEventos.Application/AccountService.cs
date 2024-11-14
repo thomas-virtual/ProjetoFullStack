@@ -34,7 +34,7 @@ namespace ProEventos.Application
         {
             try
             {
-                 var user = _userPersist.GetUserByUsername(username);
+                 var user = await _userPersist.GetUserByUsername(username);
                  if(user == null) return null;
 
                  var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
@@ -46,7 +46,7 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<UserDto> CreateAccountAsync(UserDto userDto)
+        public async Task<UserUpdateDto> CreateAccountAsync(UserDto userDto)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace ProEventos.Application
 
                  if(result.Succeeded)
                  {
-                    var userUpdateDto = _mapper.Map<UserDto>(user);
+                    var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
                     return userUpdateDto;
                  }
 
@@ -71,19 +71,24 @@ namespace ProEventos.Application
         {
             try
             {
-                var user = _userPersist.GetUserByUsername(userUpdateDto.Username);
+                var user = await _userPersist.GetUserByUsername(userUpdateDto.Username);
                 if(user == null) return null;
+
+                userUpdateDto.Id = user.Id;
 
                 _mapper.Map(userUpdateDto, user);
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                if(userUpdateDto.Password != null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                }
 
                 _userPersist.Update<User>(user);
 
                 if(await _userPersist.SaveChangesAsync())
                 {
-                    var userReturn = _userPersist.GetUserByUsername(user.UserName);
+                    var userReturn = await _userPersist.GetUserByUsername(user.UserName);
                     return _mapper.Map<UserUpdateDto>(userReturn);
                 }
 

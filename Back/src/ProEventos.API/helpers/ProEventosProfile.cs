@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AutoMapper;
 using ProEventos.Application.dtos;
 using ProEventos.Domain;

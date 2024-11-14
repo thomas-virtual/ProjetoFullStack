@@ -1,5 +1,5 @@
 <div class="card">
-    <form [formGroup]="perfilForm">
+    <form [formGroup]="perfilForm" (ngSubmit)="atualizarUsuario()">
         <div class="row p-3">
             <div class="col-lg-3 pt-1">
                 <div class="card mb-3">
@@ -12,11 +12,10 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <div class="h4 text-center mb-3">UserName</div>
-                        <div class="h7 text-bold pb-1"><b>Nome:</b> Miracles Lee Cross</div>
-                        <div class="h7">
-                            Developer of web applications, JavaScript, PHP, Java, Python, Ruby, Java, Node.js,
-                            etc.
+                        <div class="h4 text-center mb-3">{{userUpdate.username}}</div>
+                        <div class="h7 text-bold pb-1"><b>Nome:</b> {{userUpdate.primeiroNome +" "+userUpdate.ultimoNome}}</div>
+                        <div class="h7 text-center">
+                            {{userUpdate.descricao}}
                         </div>
                     </div>
                     <ul class="list-group list-group-flush">
@@ -44,23 +43,23 @@
                     <div class="form-group col">
                         <label>Título</label>
                         <select class="form-control" [ngClass]="{'is-invalid': perfilForm.get('titulo')?.errors && perfilForm.get('titulo')?.touched}" formControlName="titulo">
-                            <option value="0">Não Quero</option>
-                            <option value="Senhorita">Tecnólogo(a)</option>
-                            <option value="Senhorita">Bacharel</option>
-                            <option value="Senhorita">Especialista</option>
-                            <option value="Senhorita">Pós Graduado(a)</option>
-                            <option value="Senhorita">Mestre</option>
-                            <option value="Senhorita">Doutor(a)</option>
-                            <option value="Senhorita">Pós Doc</option>
+                            <option value="NaoInformado">Não Informado</option>
+                            <option value="Tecnologo">Tecnólogo(a)</option>
+                            <option value="Bacharel">Bacharel</option>
+                            <option value="Especial">Especialista</option>
+                            <option value="PosGraduado">Pós Graduado(a)</option>
+                            <option value="Mestrado">Mestre(a)</option>
+                            <option value="Doutorado">Doutor(a)</option>
+                            <option value="PosDoutorado">Pós Doc</option>
                         </select>
                         <div *ngIf="perfilForm.get('titulo')?.hasError('required')" class="invalid-feedback">Título é obrigatório</div>
                     </div>
                     <div class="form-group col-sm-5">
                         <label>Primeiro Nome</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('nome')?.errors && perfilForm.get('nome')?.touched}" formControlName="nome" type="text" class="form-control"/>
-                        <div *ngIf="perfilForm.get('nome')?.hasError('required')" class="invalid-feedback">Primeiro Nome é obrigatório</div>
-                        <div *ngIf="perfilForm.get('nome')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
-                        <div *ngIf="perfilForm.get('nome')?.hasError('maxlength')" class="invalid-feedback">Quantidade maxima de caracteres é 6</div>
+                        <input  [ngClass]="{'is-invalid': perfilForm.get('primeiroNome')?.errors && perfilForm.get('primeiroNome')?.touched}" formControlName="primeiroNome" type="text" class="form-control"/>
+                        <div *ngIf="perfilForm.get('primeiroNome')?.hasError('required')" class="invalid-feedback">Primeiro Nome é obrigatório</div>
+                        <div *ngIf="perfilForm.get('primeiroNome')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
+                        <div *ngIf="perfilForm.get('primeiroNome')?.hasError('maxlength')" class="invalid-feedback">Quantidade maxima de caracteres é 6</div>
                     </div>
                     <div class="form-group col-sm-5">
                         <label>Último nome</label>
@@ -79,21 +78,22 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label>Telefone</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('telefone')?.errors && perfilForm.get('telefone')?.touched}" formControlName="telefone" type="text" class="form-control" />
-                        <div *ngIf="perfilForm.get('telefone')?.hasError('required')" class="invalid-feedback">Telefone é obrigatório</div>
+                        <input  [ngClass]="{'is-invalid': perfilForm.get('phoneNumber')?.errors && perfilForm.get('phoneNumber')?.touched}" formControlName="phoneNumber" type="text" class="form-control" />
+                        <div *ngIf="perfilForm.get('phoneNumber')?.hasError('required')" class="invalid-feedback">Telefone é obrigatório</div>
                     </div>
                     <div class="form-group col-sm">
                         <label>Função</label>
                         <select [ngClass]="{'is-invalid': perfilForm.get('funcao')?.errors && perfilForm.get('funcao')?.touched}" formControlName="funcao"  class="form-control">
+                            <option value="NaoInformado">Nao Informado</option>
                             <option value="Participante">Participante</option>
                             <option value="Palestrante">Palestrante</option>
                         </select>
                         <div *ngIf="perfilForm.get('funcao')?.hasError('required')" class="invalid-feedback">Função é obrigatório</div>
                     </div>
-                    <form class="form-group col-12">
+                    <div class="form-group col-12">
                         <label>Descrição</label>
-                        <input type="text" class="form-control" />
-                    </form>
+                        <input type="text" class="form-control" formControlName="descricao"/>
+                    </div>
                 </div>
                 <div>
                     <h3 class="pt-3 border-bottom">Mudar Senha</h3>
@@ -102,17 +102,17 @@
                 <div class="form-row">
                     <div class="form-group col-sm">
                         <label>Senha</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('senha')?.errors && perfilForm.get('senha')?.touched}" formControlName="senha" type="password" class="form-control" />
-                        <div *ngIf="perfilForm.get('senha')?.hasError('required')" class="invalid-feedback">Senha é obrigatório</div>
-                        <div *ngIf="perfilForm.get('senha')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
-                        <div *ngIf="perfilForm.get('senha')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
+                        <input  [ngClass]="{'is-invalid': perfilForm.get('password')?.errors && perfilForm.get('password')?.touched}" formControlName="password" type="password" class="form-control" />
+                        <div *ngIf="perfilForm.get('password')?.hasError('required')" class="invalid-feedback">Senha é obrigatório</div>
+                        <div *ngIf="perfilForm.get('password')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
+                        <div *ngIf="perfilForm.get('password')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
                     </div>
                     <div class="form-group col-sm">
                         <label>Confirmar Senha</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('confirmaSenha')?.errors && perfilForm.get('confirmaSenha')?.touched}" formControlName="confirmaSenha" type="password" class="form-control" />
-                        <div *ngIf="perfilForm.get('confirmaSenha')?.hasError('required')" class="invalid-feedback">Confirmar é obrigatório</div>
-                        <div *ngIf="perfilForm.get('confirmaSenha')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
-                        <div *ngIf="perfilForm.get('confirmaSenha')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
+                        <input  [ngClass]="{'is-invalid': perfilForm.get('confirmPassword')?.errors && perfilForm.get('confirmPassword')?.touched}" formControlName="confirmPassword" type="password" class="form-control" />
+                        <div *ngIf="perfilForm.get('confirmPassword')?.hasError('required')" class="invalid-feedback">Confirmar é obrigatório</div>
+                        <div *ngIf="perfilForm.get('confirmPassword')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
+                        <div *ngIf="perfilForm.get('confirmPassword')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
                     </div>
                 </div>
             </div>
@@ -122,7 +122,7 @@
                 <button class="btn btn-outline-secondary mr-auto border">
                     Cancelar Alteração
                 </button>
-                <button class="btn btn-success">
+                <button class="btn btn-success" type="submit">
                     <span class="mr-1"></span>
                     Salvar Alteração
                 </button>
