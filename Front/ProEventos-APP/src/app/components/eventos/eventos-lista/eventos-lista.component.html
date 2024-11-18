@@ -8,7 +8,8 @@
             type="text" 
             class="form-control mr-4 rounded-right" 
             placeholder="Buscar por Tema e Local"
-            [(ngModel)]="listFilter">
+            (input)="filterEvents($event.target)"
+            >
             
             <div class="d-flex btn btn-outline-primary btn-new">
                 <a (click)="novoEvento()" class="d-flex align-items-center" style="text-decoration: none;">
@@ -37,7 +38,7 @@
             </tr>
         </thead>
         <tbody *ngIf="eventos && eventos.length">
-            <tr *ngFor="let evento of filteredEvents" (click)="detalheEvento(evento.eventoId)">
+            <tr *ngFor="let evento of eventos" (click)="detalheEvento(evento.eventoId)">
                 <td>{{evento.eventoId}}</td>
                 <td class="d-none d-md-table-cell">
                     <img [height]="120"
@@ -70,6 +71,24 @@
             </tr>
         </tfoot>
     </table>
+
+    <div class="d-flex justify-content-center">
+        <pagination 
+            [totalItems]="pagination.totalItems"
+            [(ngModel)]="pagination.currentPage"
+            (pageChanged)="pageChanged($event)"
+            [itemsPerPage]="pagination.itemsPerPage"
+            [boundaryLinks]="true" 
+
+            pageBtnClass="btn"
+            previousText="&lsaquo;" 
+            nextText="&rsaquo;" 
+            firstText="&laquo;" 
+            lastText="&raquo;"
+        >
+
+        </pagination>
+    </div>
 </div>
 
 

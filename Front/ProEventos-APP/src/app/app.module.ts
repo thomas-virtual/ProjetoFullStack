@@ -10,6 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { ToastrModule } from 'ngx-toastr';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { BsDatepickerModule, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerModule } from "ngx-spinner";
 
@@ -83,6 +84,7 @@ import { HomeComponent } from './components/home/home.component';
     NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    PaginationModule.forRoot()
   ],
   providers: [
     EventoService, 
