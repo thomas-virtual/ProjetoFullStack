@@ -60,7 +60,6 @@ export class AccountService {
     return this.http.put(this.baseURL + '/updateuser', model).pipe(
       take(1),
       map((user: UserUpdate) => {
-        console.log(user)
         this.setCurrentUser(user);
       })
     )
