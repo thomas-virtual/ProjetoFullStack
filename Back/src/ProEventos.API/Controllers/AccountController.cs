@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
+using ProEventos.API.helpers;
 using ProEventos.Application.Contratos;
 using ProEventos.Application.dtos;
 
@@ -18,11 +19,14 @@ namespace ProEventos.API.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
+        private readonly IUtil _util;
+        private readonly string _destination = "Perfil";
 
-        public AccountController(IAccountService accountService, ITokenService tokenService)
+        public AccountController(IAccountService accountService, ITokenService tokenService, IUtil util)
         {
             this._accountService = accountService;
             this._tokenService = tokenService;
+            this._util = util;
         }
 
         [HttpGet("GetUser")]
@@ -119,6 +123,38 @@ namespace ProEventos.API.Controllers
                     $"Erro ao tentar recuperar usuários. Erro: {ex.Message}"
                 );
             }
+        }
+
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage() 
+        {
+            try
+            {
+                 var user = await _accountService.GetUserByUsernameAsync(User.GetUserName());
+                 if(user == null) return NoContent();
+
+                 var file = Request.Form.Files[0];
+                 if(file.Length > 0)
+                 {
+                    // DELETE IMAGE
+                    _util.DeleteImage(user.ImagemURL, _destination);
+
+                    // SAVE IMAGE 
+                    user.ImagemURL = await _util.SaveImage(file, _destination);
+                 }
+
+                 var userRetorno = await _accountService.UpdateAccount(user);
+
+                 return Ok(userRetorno);
+            }
+            catch (Exception ex)
+            {
+                
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar fazer Upload da Imagem. Error: {ex.Message}"
+                    );
+            } 
         }
     }
 }

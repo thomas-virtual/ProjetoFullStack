@@ -75,11 +75,15 @@ namespace ProEventos.API
             services.AddScoped<ILoteService, LoteService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPalestranteService, PalestranteService>();
+            services.AddScoped<IRedeSocialService, RedeSocialService>();
 
             services.AddScoped<IGeralPersist, GeralPersistance>();
             services.AddScoped<IEventoPersist, EventoPersistance>();
             services.AddScoped<ILotePersist, LotePersistence>();
             services.AddScoped<IUserPersist, UserPersistence>();
+            services.AddScoped<IPalestrantePersist, PalestrantePersistance>();
+            services.AddScoped<IRedeSocialPersist, RedeSocialPersistence>();
 
             services.AddControllers()
                     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
