@@ -220,6 +220,19 @@
                     </div>
                 </div>
             </div>
+            <div *ngIf="modoEditar" class="card rounded shadow-sm mt-3">
+                <div class="p-3">
+                    <div class="d-flex border-bottom">
+                        <h2 class="mr-auto">
+                            Redes Sociais do evento do Evento
+                        </h2>
+                        <h2>
+                            <i class="fa fa-square-share"></i>
+                        </h2>
+                    </div>
+                    <app-redeSocial-detalhe [eventoId]="eventoId"></app-redeSocial-detalhe>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4" *ngIf="modoEditar">

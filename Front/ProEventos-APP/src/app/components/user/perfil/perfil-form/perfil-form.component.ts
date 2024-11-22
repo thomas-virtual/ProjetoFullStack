@@ -3,6 +3,7 @@ import { AbstractControlOptions, FormControl, FormGroup, Validators } from '@ang
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { ValidatorHelp } from 'src/helpers/ValidatorHelp';
 import { UserUpdate } from 'src/models/identity/UserUpdate';
 import { AccountService } from 'src/services/AccountService.service';
@@ -13,67 +14,56 @@ import { AccountService } from 'src/services/AccountService.service';
   styleUrls: ['./perfil-form.component.scss']
 })
 export class PerfilFormComponent implements OnInit {
+
   public perfilForm: FormGroup = new FormGroup({});
-  public userUpdate = {} as UserUpdate;
+  public usuario = {} as UserUpdate;
+  public file: File;
+  public imagemURL: string = '';
+
   constructor(
     private accountService: AccountService,
-    private router: Router,
-    private spinner: NgxSpinnerService,
     private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
-    this.validation()
-    this.carregarUsuario();
+    
   }
 
-  private carregarUsuario(): void {
+  setFormValue(usuario: UserUpdate): void {
+    this.usuario = usuario;
+    if(this.usuario.imagemURL)
+      this.imagemURL = environment.apiURL + `/resources/perfil/${this.usuario.imagemURL}`
+    else
+      this.imagemURL = "../../../../../assets/semImagem.png"
+  }
+
+  isPalestrante(): boolean {
+    return this.usuario.funcao === 'Palestrante';
+  }
+
+  onFileChange(evt: any): void {
+    const reader: FileReader = new FileReader();
+
+    reader.onload = (evt: any) => this.imagemURL = evt.target.result;
+
+    console.log(evt.target.result)
+
+    this.file = evt.target.files;
+    reader.readAsDataURL(this.file[0]);
+
+    this.upload()
+  }
+
+  upload(): void {
     this.spinner.show();
-    this.accountService.getUser().subscribe(
-      (userRetorno: UserUpdate) => {
-        this.userUpdate = userRetorno;
-        this.perfilForm.patchValue(this.userUpdate)
-        this.toastr.success("Usuário carregado com sucesso", "Sucesso")
+    this.accountService.postUpload(this.file).subscribe(
+      (res) => {
+        this.toastr.success("Imagem de usuário atualizada com sucesso!", "Sucesso")
       },
-      (error) => {
-        console.error(error)
-        this.toastr.error("Erro ao carregar usuário")
-        this.router.navigateByUrl('dashboard')
-      },
-    ).add(() => this.spinner.hide());
-  }
-
-  public atualizarUsuario(): void {
-    this.spinner.show()
-    var userUpdate = {...this.perfilForm.value};
-    this.accountService.updateUser(userUpdate).subscribe(
       () => {
-        this.toastr.success("Usuário atualizado com sucesso", "Sucesso")
-        this.carregarUsuario();
-      },
-      (error) => {
-        console.error(error)
-        this.toastr.error("Erro ao tentar atualizar usuário", "Erro")
-      },
+        this.toastr.error("Ocorreu um erro ao atualizar imagem de usuário!", "Erro")
+      }
     ).add(() => this.spinner.hide())
-  }
-  
-  validation(): void {
-    const formOptions: AbstractControlOptions = {
-      validators: ValidatorHelp.mustMatch('password', 'confirmPassword')
-    }
-
-    this.perfilForm = new FormGroup({
-      username: new FormControl(''),
-      titulo: new FormControl('NaoInformado', [Validators.required, ]),
-      primeiroNome: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20) ]),
-      ultimoNome: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20) ]),
-      email: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]*\@[a-z]*\.com?/)]),
-      phoneNumber: new FormControl('', [Validators.required, ]),
-      funcao: new FormControl('NaoInformado', [Validators.required, ]),
-      descricao: new FormControl(''),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    }, formOptions)
   }
 }

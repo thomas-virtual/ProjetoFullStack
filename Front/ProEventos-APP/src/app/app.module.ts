@@ -13,6 +13,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { BsDatepickerModule, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 import { AppComponent } from './app.component';
 import { EventosComponent } from './components/eventos/eventos.component';
@@ -40,6 +41,10 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from 'src/utils/CurrencyMaskConfig';
 import { JwtInterceptor } from 'src/interceptors/jwt.interceptor';
 import { HomeComponent } from './components/home/home.component';
+import { PerfilDetalheComponent } from './components/user/perfil/perfil-form/perfil-detalhe/perfil-detalhe.component';
+import { PalestranteListaComponent } from './components/palestrantes/palestrante-lista/palestrante-lista.component';
+import { PalestranteDetalheComponent } from './components/user/perfil/perfil-form/palestrante-detalhe/palestrante-detalhe.component';
+import { RedeSocialDetalheComponent } from './components/user/perfil/perfil-form/redeSocial-detalhe/redeSocial-detalhe.component';
 
 @NgModule({
   declarations: [	
@@ -51,6 +56,9 @@ import { HomeComponent } from './components/home/home.component';
     PalestrantesComponent,
     ContatosComponent,
     PerfilComponent,
+    PalestranteDetalheComponent,
+    RedeSocialDetalheComponent,
+    PalestranteListaComponent,
     DashboardComponent,
     EventosListaComponent,
     EventosDetalheComponent,
@@ -63,6 +71,7 @@ import { HomeComponent } from './components/home/home.component';
     LoteFormComponent,
     EventosFormComponent,
     HomeComponent,
+    PerfilDetalheComponent
    ],
   imports: [
     BrowserModule,
@@ -84,7 +93,8 @@ import { HomeComponent } from './components/home/home.component';
     NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     EventoService, 

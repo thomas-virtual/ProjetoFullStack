@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/services/AccountService.service';
 
@@ -12,18 +12,19 @@ export class NavComponent implements OnInit {
   
   constructor(
     private router: Router,
-    public accountService: AccountService
+    public accountService: AccountService,
   ) { }
 
   public ngOnInit(): void {
+
   }
 
   mostrarNavbar():boolean {
-    return this.router.url !== '/user/login' ? true : false
+    return this.router.url !== '/user/login';
   }
 
   logout(): void {
     this.accountService.logout()
-    this.router.navigateByUrl('/user/registration')
+    this.router.navigateByUrl('/user/login')
   }
 }

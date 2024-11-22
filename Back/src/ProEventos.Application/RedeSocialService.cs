@@ -94,7 +94,7 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task AddRedeSocial(int eventoId, RedeSocialDto model, bool isEvento) {
+        public async Task AddRedeSocial(int id, RedeSocialDto model, bool isEvento) {
             try
             {
                  var redeSocial = _mapper.Map<RedeSocial>(model);
@@ -102,11 +102,11 @@ namespace ProEventos.Application
                 if(isEvento)
                 {
                     redeSocial.PalestranteId = null;
-                    redeSocial.EventoId = model.EventoId;
+                    redeSocial.EventoId = id;
                 }
                 else 
                 {
-                    redeSocial.PalestranteId = model.PalestranteId;
+                    redeSocial.PalestranteId = id;
                     redeSocial.EventoId = null;
                 }
 

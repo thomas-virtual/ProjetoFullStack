@@ -1,132 +1,66 @@
-<div class="card">
-    <form [formGroup]="perfilForm" (ngSubmit)="atualizarUsuario()">
-        <div class="row p-3">
-            <div class="col-lg-3 pt-1">
-                <div class="card mb-3">
-                    <div class="card-header"></div>
-                    <div class="d-flex align-self-center pt-3">
-                        <a>
-                            <img
-                            src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R"
-                            name="aboutme" width="120" height="120" class="rounded-circle">
-                        </a>
+<form [formGroup]="perfilForm">
+    <div class="row p-3">
+        <div class="col-lg-3 pt-1">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <input type="file" #file style="display: none;" (change)="onFileChange($event)">
+                </div>
+                <div class="d-flex align-self-center pt-3">
+                    <img
+                    (click)="file.click()"
+                    [src]="imagemURL"
+                    name="aboutme" 
+                    width="120" 
+                    height="120" 
+                    class="rounded-circle"
+                    style="cursor: pointer;"
+                    >
+                </div>
+                <div class="card-body">
+                    <div class="h4 text-center mb-3">{{usuario.username}}</div>
+                    <div class="h7 text-bold pb-1"><b>Nome:</b> {{usuario.primeiroNome +" "+usuario.ultimoNome}}</div>
+                    <div class="h7 text-center">
+                        {{usuario.descricao}}
                     </div>
-                    <div class="card-body">
-                        <div class="h4 text-center mb-3">{{userUpdate.username}}</div>
-                        <div class="h7 text-bold pb-1"><b>Nome:</b> {{userUpdate.primeiroNome +" "+userUpdate.ultimoNome}}</div>
-                        <div class="h7 text-center">
-                            {{userUpdate.descricao}}
-                        </div>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6 text-center border-right">
-                                    <div class="h5">1342</div>
-                                    <div class="h6 text-muted">Eventos Ministrados</div>
-                                </div>
-                                <div class="col-6 text-center">
-                                    <div class="h5">1342</div>
-                                    <div class="h6 text-muted">Eventos Participados</div>
-                                </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-6 text-center border-right">
+                                <div class="h5">0</div>
+                                <div class="h6 text-muted">Eventos Ministrados</div>
                             </div>
-                        </li>
-                    </ul>
-                    <div class="card-footer"></div>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="form-row">
-                    <div class="form-group col-12">
-                        <h3 class="border-bottom">Detalhe Perfil</h3>
-                    </div>
-                    <div class="form-group col">
-                        <label>Título</label>
-                        <select class="form-control" [ngClass]="{'is-invalid': perfilForm.get('titulo')?.errors && perfilForm.get('titulo')?.touched}" formControlName="titulo">
-                            <option value="NaoInformado">Não Informado</option>
-                            <option value="Tecnologo">Tecnólogo(a)</option>
-                            <option value="Bacharel">Bacharel</option>
-                            <option value="Especial">Especialista</option>
-                            <option value="PosGraduado">Pós Graduado(a)</option>
-                            <option value="Mestrado">Mestre(a)</option>
-                            <option value="Doutorado">Doutor(a)</option>
-                            <option value="PosDoutorado">Pós Doc</option>
-                        </select>
-                        <div *ngIf="perfilForm.get('titulo')?.hasError('required')" class="invalid-feedback">Título é obrigatório</div>
-                    </div>
-                    <div class="form-group col-sm-5">
-                        <label>Primeiro Nome</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('primeiroNome')?.errors && perfilForm.get('primeiroNome')?.touched}" formControlName="primeiroNome" type="text" class="form-control"/>
-                        <div *ngIf="perfilForm.get('primeiroNome')?.hasError('required')" class="invalid-feedback">Primeiro Nome é obrigatório</div>
-                        <div *ngIf="perfilForm.get('primeiroNome')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
-                        <div *ngIf="perfilForm.get('primeiroNome')?.hasError('maxlength')" class="invalid-feedback">Quantidade maxima de caracteres é 6</div>
-                    </div>
-                    <div class="form-group col-sm-5">
-                        <label>Último nome</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('ultimoNome')?.errors && perfilForm.get('ultimoNome')?.touched}" formControlName="ultimoNome" type="text" class="form-control"/>
-                        <div *ngIf="perfilForm.get('ultimoNome')?.hasError('required')" class="invalid-feedback">Último Nome é obrigatório</div>
-                        <div *ngIf="perfilForm.get('ultimoNome')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
-                        <div *ngIf="perfilForm.get('ultimoNome')?.hasError('maxlength')" class="invalid-feedback">Quantidade maxima de caracteres é 6</div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-sm-5">
-                        <label>E-mail</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('email')?.errors && perfilForm.get('email')?.touched}" formControlName="email" type="text" class="form-control" />
-                        <div *ngIf="perfilForm.get('email')?.hasError('required')" class="invalid-feedback">E-mail é obrigatório</div>
-                        <div *ngIf="perfilForm.get('email')?.hasError('pattern')" class="invalid-feedback">Campo preenchido incorretamente</div>
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <label>Telefone</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('phoneNumber')?.errors && perfilForm.get('phoneNumber')?.touched}" formControlName="phoneNumber" type="text" class="form-control" />
-                        <div *ngIf="perfilForm.get('phoneNumber')?.hasError('required')" class="invalid-feedback">Telefone é obrigatório</div>
-                    </div>
-                    <div class="form-group col-sm">
-                        <label>Função</label>
-                        <select [ngClass]="{'is-invalid': perfilForm.get('funcao')?.errors && perfilForm.get('funcao')?.touched}" formControlName="funcao"  class="form-control">
-                            <option value="NaoInformado">Nao Informado</option>
-                            <option value="Participante">Participante</option>
-                            <option value="Palestrante">Palestrante</option>
-                        </select>
-                        <div *ngIf="perfilForm.get('funcao')?.hasError('required')" class="invalid-feedback">Função é obrigatório</div>
-                    </div>
-                    <div class="form-group col-12">
-                        <label>Descrição</label>
-                        <input type="text" class="form-control" formControlName="descricao"/>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="pt-3 border-bottom">Mudar Senha</h3>
-                    <p>Caso mude de senha, preencha os campos abaixo:</p>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-sm">
-                        <label>Senha</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('password')?.errors && perfilForm.get('password')?.touched}" formControlName="password" type="password" class="form-control" />
-                        <div *ngIf="perfilForm.get('password')?.hasError('required')" class="invalid-feedback">Senha é obrigatório</div>
-                        <div *ngIf="perfilForm.get('password')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
-                        <div *ngIf="perfilForm.get('password')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
-                    </div>
-                    <div class="form-group col-sm">
-                        <label>Confirmar Senha</label>
-                        <input  [ngClass]="{'is-invalid': perfilForm.get('confirmPassword')?.errors && perfilForm.get('confirmPassword')?.touched}" formControlName="confirmPassword" type="password" class="form-control" />
-                        <div *ngIf="perfilForm.get('confirmPassword')?.hasError('required')" class="invalid-feedback">Confirmar é obrigatório</div>
-                        <div *ngIf="perfilForm.get('confirmPassword')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
-                        <div *ngIf="perfilForm.get('confirmPassword')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
-                    </div>
-                </div>
+                            <div class="col-6 text-center">
+                                <div class="h5">0</div>
+                                <div class="h6 text-muted">Eventos Participados</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="card-footer"></div>
             </div>
         </div>
-        <div class="card-footer">
-            <div class="d-flex">
-                <button class="btn btn-outline-secondary mr-auto border">
-                    Cancelar Alteração
-                </button>
-                <button class="btn btn-success" type="submit">
-                    <span class="mr-1"></span>
-                    Salvar Alteração
-                </button>
-            </div>
+        <div class="col-lg-9">
+            <tabset>
+                <tab id="perfil" class="border border-top-0 p-3">
+                    <ng-template tabHeading>
+                       <i class="fa fa-address-card mr-2"></i> <span>Perfil</span>
+                    </ng-template>   
+                    <app-perfil-detalhe (changeFormValue)="setFormValue($event)"></app-perfil-detalhe>
+                </tab>
+                <tab *ngIf="isPalestrante()" id="palestrante"  class="border border-top-0 p-3">
+                    <ng-template tabHeading>
+                        <i class="fa fa-user mr-2"></i> <span>Palestrante</span>
+                     </ng-template>  
+                     <app-palestrante-detalhe></app-palestrante-detalhe>
+                </tab>
+                <tab *ngIf="isPalestrante()" id="rede-social" class="border border-top-0 p-3">
+                    <ng-template tabHeading>
+                        <i class="fa fa-share-square mr-2"></i> <span>Rede Social</span>
+                     </ng-template>  
+                     <app-redeSocial-detalhe></app-redeSocial-detalhe>
+                </tab>
+              </tabset>
         </div>
-    </form>
-</div>
+    </div>
+</form>

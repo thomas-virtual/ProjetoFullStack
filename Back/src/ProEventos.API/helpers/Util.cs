@@ -36,10 +36,13 @@ namespace ProEventos.API.helpers
 
         public void DeleteImage(String imageName, string destination) 
         {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @$"Resources/${destination}", imageName);
-            if(System.IO.File.Exists(imagePath))
+            if(!(String.IsNullOrEmpty(imageName)))
             {
-                System.IO.File.Delete(imagePath);
+                var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @$"Resources/${destination}", imageName);
+                if(System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
             }
         }
     }

@@ -130,9 +130,7 @@ export class EventosListaComponent implements OnInit {
   }
 
   pageChanged(event):void {
-    console.log("pg: " + event.page)
     this.pagination.currentPage = event.page;
-    console.log("pg: " + this.pagination.currentPage)
     this.getEventos()
   }
 }

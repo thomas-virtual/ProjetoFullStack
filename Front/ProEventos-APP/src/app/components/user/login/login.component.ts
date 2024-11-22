@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { first } from 'rxjs/operators';
 import { UserLogin } from 'src/models/identity/UserLogin';
 import { AccountService } from 'src/services/AccountService.service';
 
@@ -24,11 +25,12 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
+    
     this.spinner.show()
     this.accountService.login(this.model).subscribe(
       () => {
         this.toastr.success("Usuário autenticado com sucesso", "Sucesso")
-        this.router.navigateByUrl('/dashboard')
+        this.router.navigate(['/dashboard'], {skipLocationChange: false})
       },
       (error) => {
         this.toastr.error("Erro ao tentar autenticar usuário.", "Erro de Login")

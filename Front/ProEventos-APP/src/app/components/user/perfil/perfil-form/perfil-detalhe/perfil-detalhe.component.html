@@ -1,0 +1,92 @@
+<form action="" [formGroup]="perfilDetalheForm" (ngSubmit)="atualizarUsuario()">
+  <div class="form-row">
+    <div class="form-group col-12">
+      <h3 class="border-bottom">Detalhe Perfil</h3>
+    </div>
+    <div class="form-group col">
+      <label>Título</label>
+      <select class="form-control" [ngClass]="{'is-invalid': perfilDetalheForm.get('titulo')?.errors && perfilDetalheForm.get('titulo')?.touched}" formControlName="titulo">
+        <option value="NaoInformado">Não Informado</option>
+        <option value="Tecnologo">Tecnólogo(a)</option>
+        <option value="Bacharel">Bacharel</option>
+        <option value="Especial">Especialista</option>
+        <option value="PosGraduado">Pós Graduado(a)</option>
+        <option value="Mestrado">Mestre(a)</option>
+        <option value="Doutorado">Doutor(a)</option>
+        <option value="PosDoutorado">Pós Doc</option>
+      </select>
+      <div *ngIf="perfilDetalheForm.get('titulo')?.hasError('required')" class="invalid-feedback">Título é obrigatório</div>
+    </div>
+    <div class="form-group col-sm-5">
+      <label>Primeiro Nome</label>
+      <input  [ngClass]="{'is-invalid': perfilDetalheForm.get('primeiroNome')?.errors && perfilDetalheForm.get('primeiroNome')?.touched}" formControlName="primeiroNome" type="text" class="form-control"/>
+      <div *ngIf="perfilDetalheForm.get('primeiroNome')?.hasError('required')" class="invalid-feedback">Primeiro Nome é obrigatório</div>
+      <div *ngIf="perfilDetalheForm.get('primeiroNome')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
+      <div *ngIf="perfilDetalheForm.get('primeiroNome')?.hasError('maxlength')" class="invalid-feedback">Quantidade maxima de caracteres é 6</div>
+    </div>
+    <div class="form-group col-sm-5">
+      <label>Último nome</label>
+      <input  [ngClass]="{'is-invalid': perfilDetalheForm.get('ultimoNome')?.errors && perfilDetalheForm.get('ultimoNome')?.touched}" formControlName="ultimoNome" type="text" class="form-control"/>
+      <div *ngIf="perfilDetalheForm.get('ultimoNome')?.hasError('required')" class="invalid-feedback">Último Nome é obrigatório</div>
+      <div *ngIf="perfilDetalheForm.get('ultimoNome')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
+      <div *ngIf="perfilDetalheForm.get('ultimoNome')?.hasError('maxlength')" class="invalid-feedback">Quantidade maxima de caracteres é 6</div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-sm-5">
+      <label>E-mail</label>
+      <input  [ngClass]="{'is-invalid': perfilDetalheForm.get('email')?.errors && perfilDetalheForm.get('email')?.touched}" formControlName="email" type="text" class="form-control" />
+      <div *ngIf="perfilDetalheForm.get('email')?.hasError('required')" class="invalid-feedback">E-mail é obrigatório</div>
+      <div *ngIf="perfilDetalheForm.get('email')?.hasError('pattern')" class="invalid-feedback">Campo preenchido incorretamente</div>
+    </div>
+    <div class="form-group col-sm-4">
+      <label>Telefone</label>
+      <input  [ngClass]="{'is-invalid': perfilDetalheForm.get('phoneNumber')?.errors && perfilDetalheForm.get('phoneNumber')?.touched}" formControlName="phoneNumber" type="text" class="form-control" />
+      <div *ngIf="perfilDetalheForm.get('phoneNumber')?.hasError('required')" class="invalid-feedback">Telefone é obrigatório</div>
+    </div>
+    <div class="form-group col-sm">
+      <label>Função</label>
+      <select [ngClass]="{'is-invalid': perfilDetalheForm.get('funcao')?.errors && perfilDetalheForm.get('funcao')?.touched}" formControlName="funcao"  class="form-control">
+        <option value="NaoInformado">Nao Informado</option>
+        <option value="Participante">Participante</option>
+        <option value="Palestrante">Palestrante</option>
+      </select>
+      <div *ngIf="perfilDetalheForm.get('funcao')?.hasError('required')" class="invalid-feedback">Função é obrigatório</div>
+    </div>
+    <div class="form-group col-12">
+      <label>Descrição</label>
+      <input type="text" class="form-control" formControlName="descricao"/>
+    </div>
+  </div>
+  <div>
+    <h3 class="pt-3 border-bottom">Mudar Senha</h3>
+    <p>Caso mude de senha, preencha os campos abaixo:</p>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-sm">
+      <label>Senha</label>
+      <input  [ngClass]="{'is-invalid': perfilDetalheForm.get('password')?.errors && perfilDetalheForm.get('password')?.touched}" formControlName="password" type="password" class="form-control" />
+      <div *ngIf="perfilDetalheForm.get('password')?.hasError('required')" class="invalid-feedback">Senha é obrigatório</div>
+      <div *ngIf="perfilDetalheForm.get('password')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
+      <div *ngIf="perfilDetalheForm.get('password')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
+    </div>
+    <div class="form-group col-sm">
+      <label>Confirmar Senha</label>
+      <input  [ngClass]="{'is-invalid': perfilDetalheForm.get('confirmPassword')?.errors && perfilDetalheForm.get('confirmPassword')?.touched}" formControlName="confirmPassword" type="password" class="form-control" />
+      <div *ngIf="perfilDetalheForm.get('confirmPassword')?.hasError('required')" class="invalid-feedback">Confirmar é obrigatório</div>
+      <div *ngIf="perfilDetalheForm.get('confirmPassword')?.hasError('minlength')" class="invalid-feedback">Quantidade minima de caracteres é 6</div>
+      <div *ngIf="perfilDetalheForm.get('confirmPassword')?.hasError('mustMatch')" class="invalid-feedback">As senhas devem ser iguais</div>
+    </div>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex">
+          <button class="btn btn-outline-secondary mr-auto border">
+              Cancelar Alteração
+          </button>
+          <button class="btn btn-success" type="submit">
+              <span class="mr-1"></span>
+              Salvar Alteração
+          </button>
+      </div>
+  </div>
+</form>

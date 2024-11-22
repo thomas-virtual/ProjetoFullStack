@@ -1,0 +1,7 @@
+<form [formGroup]="palestranteForm">
+  <div class="form-group row px-3">
+    <label>Mini Curriculo</label>
+    <textarea [ngClass]="{'is-ivalid': f.miniCurriculo.errors && f.miniCurriculo.touched}" formControlName="miniCurriculo"></textarea>
+    <small class={{corDoFormulario}}>{{situacaoDoForm}}</small>
+  </div>
+</form>

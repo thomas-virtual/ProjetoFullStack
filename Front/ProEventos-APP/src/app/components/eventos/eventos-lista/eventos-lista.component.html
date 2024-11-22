@@ -52,7 +52,7 @@
                 <td>{{evento.local}}</td>
                 <td>{{evento.dataEvento | DateTimeFormat}}</td>
                 <td class="d-none d-md-table-cell">{{evento.qtdPessoas}}</td>
-                <td class="d-none d-md-table-cell">ESTATICO</td>
+                <td class="d-none d-md-table-cell">{{evento.lotes[0] !== null && evento.lotes[0] !== undefined ? evento.lotes[0].nome : 'N/D'}}</td>
                 <td>
                     <button class="btn btn-primary btn-sm mr-2 d-none d-lg-inline" tooltip="Editar" (click)="detalheEvento(evento.eventoId)">
                         <i class="fa fa-edit"></i>
